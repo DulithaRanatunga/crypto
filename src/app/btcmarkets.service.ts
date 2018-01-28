@@ -22,8 +22,8 @@ export class BtcmarketsService {
     const exchange: Exchange = {
       name: 'BtcMarkets',
       url: 'https://www.btcmarkets.net/home',
-      pairs: []
-    };
+      pairs: [],
+      fees: [{ currency: Currencies.BTC, ammount: 0.001}, { currency: Currencies.ETH, ammount: 0.001 }, { currency: Currencies.BCH, ammount: 0.001 }]    };
     exchange.pairs.push(this.getTickData(Currencies.BTC, Currencies.AUD));
     exchange.pairs.push(this.getTickData(Currencies.LTC, Currencies.AUD));
     exchange.pairs.push(this.getTickData(Currencies.ETH, Currencies.AUD));

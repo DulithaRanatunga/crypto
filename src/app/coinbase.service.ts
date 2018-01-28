@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { Exchange, CurrencyPair, Currency, FetchState, Currencies } from './app.model';
+import { ApiUtils } from './ApiUtils.util';
 
 interface CoinbaseApi {
     data: {
@@ -22,7 +23,8 @@ export class CoinbaseService {
         const exchange: Exchange = {
             name: 'Coinbase',
             url: 'https://www.coinbase.com/buy',
-            pairs: []
+            pairs: [],
+            fees: ApiUtils.zeroFees([Currencies.BTC,Currencies.LTC,Currencies.ETH,Currencies.BCH]),
         };
         exchange.pairs.push(this.getTickData(Currencies.BTC, Currencies.AUD));
         exchange.pairs.push(this.getTickData(Currencies.LTC, Currencies.AUD));

@@ -1,0 +1,32 @@
+
+
+<table class="table table-striped table-bordered table-hover" *ngIf="exchanges.length">
+  <thead>
+    <th>Exchange</th>
+    <th>From</th>
+    <th>To</th>
+    <th>Bid</th>
+    <th>Ask</th>
+    <th>Last</th>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let exchange of exchanges">
+      <tr *ngFor="let pair of exchange.pairs">
+        <td *ngIf="pair.fetchState === FETCHSTATE.Loading" colspan="5">
+          Loading...
+        </td>
+        <td *ngIf="pair.fetchState === FETCHSTATE.Error" colspan="5">
+          Failed to fetch...
+        </td>
+        <ng-container *ngIf="pair.fetchState === FETCHSTATE.Success">
+          <td>{{exchange.name}}</td>
+          <td>{{pair.from.code}}</td>
+          <td>{{pair.to.code}}</td>
+          <td>{{pair.bid}}</td>
+          <td>{{pair.ask}}</td>
+          <td>{{pair.last}}</td>
+        </ng-container>
+      </tr>
+    </ng-container>
+  </tbody>
+</table>

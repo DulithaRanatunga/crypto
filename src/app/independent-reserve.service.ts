@@ -31,7 +31,8 @@ export class IndependentReserveService {
     const exchange: Exchange = {
       name: 'Independent Reserve',
       url: 'https://www.independentreserve.com',
-      pairs: []
+      pairs: [],
+      fees: [{ currency: Currencies.BTC, ammount: 0.0006}, { currency: Currencies.ETH, ammount: 0.004 }, { currency: Currencies.BCH, ammount: 0.0006 }],
     };
 
     ["Xbt", "Eth", "Bch"].forEach(primary => {

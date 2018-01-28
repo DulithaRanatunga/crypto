@@ -1,0 +1,28 @@
+<table class="table table-striped table-bordered table-hover" *ngIf="routes.length">
+  <thead>
+    <th>Start</th>
+    <th>First</th>
+    <th>End</th>
+    <th>Profit</th>
+    <th>% Gain</th>
+    <th></th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let route of routes">
+      <td>{{route.start.ammount | currency:route.start.currency.code}} </td>
+      <td><strong>{{route.operations[1].toState.exchange.name}}:</strong> {{route.operations[1].toState.ammount | currency:route.operations[1].toState.currency.code}} </td>
+      <td><strong>{{route.end.exchange.name}}:</strong> {{route.end.ammount | currency:route.end.currency.code}} </td>
+      <td>{{route.profit | currency: 'AUD'}}</td>
+      <td>{{route.percentageGain | number:'.1-2'  }} %</td>
+      <td><button (click)="debugRoute = route">Show Operations</button></td>
+    </tr>
+  </tbody>
+</table>
+
+<div *ngIf="debugRoute">
+  <ol>
+    <li *ngFor="let op of debugRoute.operations">
+      <strong>{{op.type}}</strong>: {{op.toState.ammount}} {{op.toState.currency.code}} @ {{op.toState.exchange.name}}
+    </li>
+  </ol>
+</div>

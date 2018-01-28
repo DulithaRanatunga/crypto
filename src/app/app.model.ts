@@ -1,9 +1,15 @@
 import { CurrencyPipe } from "@angular/common/src/pipes";
 
+export interface TransferFee {
+    currency: Currency,
+    ammount: number
+}
+
 export interface Exchange {
     pairs: CurrencyPair[],
     name: string,
     url: string,
+    fees: TransferFee[]
 }
 
 export interface CurrencyPair {
