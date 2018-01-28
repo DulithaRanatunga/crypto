@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { Exchange, CurrencyPair, Currency, FetchState, Currencies } from './app.model';
+import { ApiUtils } from './ApiUtils.util';
 
 interface BtcApiTick {
   bestBid: number,
@@ -12,6 +13,7 @@ interface BtcApiTick {
 @Injectable()
 export class BtcmarketsService {
   private apiURL: string = 'https://api.btcmarkets.net/market/';
+  private btcMarketsFee: number = 0.85;
 
   public constructor(private httpClient: HttpClient) {
   }
@@ -42,8 +44,8 @@ export class BtcmarketsService {
     }
     this.httpClient.get(`${this.apiURL}/${from.code}/${to.code}/tick`).subscribe((data: BtcApiTick) => {
       Object.assign(pair, {
-        bid: data.bestBid,
-        ask: data.bestAsk,
+        bid: ApiUtils.applyBuyFee(data.bestBid, this.btcMarketsFee),
+        ask: ApiUtils.applySellFee(data.bestAsk, this.btcMarketsFee),
         last: data.lastPrice,
         fetchState: FetchState.Success,
         fetchTimestamp: new Date(),

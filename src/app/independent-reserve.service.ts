@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { Exchange, CurrencyPair, Currency, FetchState, Currencies } from './app.model';
+import { ApiUtils } from './ApiUtils.util';
 
 interface IndependentReserviceApiTick {
   "CreatedTimestampUtc ": Date ;//UTC timestamp of when the market summary was generated
@@ -21,6 +22,7 @@ interface IndependentReserviceApiTick {
 export class IndependentReserveService {
 
   private apiURL: string = 'https://api.independentreserve.com/Public/';
+  private fee: number = 0.5;
 
   public constructor(private httpClient: HttpClient) {
   }
@@ -50,8 +52,8 @@ export class IndependentReserveService {
     this.httpClient.get(`${this.apiURL}GetMarketSummary?primaryCurrencyCode=${from}&secondaryCurrencyCode=${to}`)
     .subscribe((data: IndependentReserviceApiTick) => {
       Object.assign(pair, {
-        bid: data.CurrentHighestBidPrice,
-        ask: data.CurrentLowestOfferPrice,
+        bid: ApiUtils.applyBuyFee(data.CurrentHighestBidPrice, this.fee),
+        ask: ApiUtils.applySellFee(data.CurrentLowestOfferPrice, this.fee),
         last: data.LastPrice,
         fetchState: FetchState.Success,
         fetchTimestamp: new Date(),
