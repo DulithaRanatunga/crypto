@@ -5,6 +5,7 @@
     <th>End</th>
     <th>Profit</th>
     <th>% Gain</th>
+    <th>Hops</th>
     <th></th>
   </thead>
   <tbody>
@@ -13,7 +14,8 @@
       <td><strong>{{route.operations[1].toState.exchange.name}}:</strong> {{route.operations[1].toState.ammount | currency:route.operations[1].toState.currency.code}} </td>
       <td><strong>{{route.end.exchange.name}}:</strong> {{route.end.ammount | currency:route.end.currency.code}} </td>
       <td>{{route.profit | currency: 'AUD'}}</td>
-      <td>{{route.percentageGain | number:'.1-2'  }} %</td>
+      <td [class.success]="route.percentageGain > 5" [class.fail]="route.percentageGain < 0">{{route.percentageGain | number:'.1-2'  }} %</td>
+      <td>{{route.operations.length}}</td>
       <td><button (click)="debugRoute = route">Show Operations</button></td>
     </tr>
   </tbody>

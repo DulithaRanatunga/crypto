@@ -8,6 +8,7 @@ import { Exchange, Currency, Currencies, CurrencyPair } from '../app.model';
   styleUrls: ['./selected-routes.component.css']
 })
 export class SelectedRoutesComponent implements OnInit {
+  public investmentStart: number = 1000;
   @Input()
   public exchanges: Exchange[];
 
@@ -17,13 +18,29 @@ export class SelectedRoutesComponent implements OnInit {
 
   ngOnInit() {
     setTimeout(() => {
-      this.routes.push(new RouteBuilder(this.exchanges).start(1000, 'AUD', 'Coinbase').trade('BTC').transferTo('Independent Reserve').trade('AUD').build());
-      this.routes.push(new RouteBuilder(this.exchanges).start(1000, 'AUD', 'Coinbase').trade('BTC').transferTo('BtcMarkets').trade('AUD').build());
-      this.routes.push(new RouteBuilder(this.exchanges).start(1000, 'AUD', 'Coinbase').trade('ETH').transferTo('Independent Reserve').trade('AUD').build());
-      this.routes.push(new RouteBuilder(this.exchanges).start(1000, 'AUD', 'Coinbase').trade('ETH').transferTo('BtcMarkets').trade('AUD').build());
-      this.routes.push(new RouteBuilder(this.exchanges).start(1000, 'AUD', 'Coinbase').trade('ETH').transferTo('BtcMarkets').trade('BTC').transferTo('Independent Reserve').trade('AUD').build());
-      this.routes = this.routes.sort((a,b) => { return b.percentageGain - a.percentageGain });
+      const outExchanges: string[] = ["Independent Reserve", "BtcMarkets"];
+      outExchanges.forEach(out => {
+        this.routes.push(this.startAt('Coinbase').trade('BTC').transferTo(out).trade('AUD').build());
+        this.routes.push(this.startAt('Coinbase').trade('ETH').transferTo(out).trade('AUD').build());
+        this.routes.push(this.startAt('Quoinex').trade('BTC').transferTo(out).trade('AUD').build());
+        this.routes.push(this.startAt('Quoinex').trade('ETH').transferTo(out).trade('AUD').build());
+        this.routes.push(this.startAt('Quoinex').trade('BTC').trade('ETH').transferTo(out).trade('AUD').build());
+        this.routes.push(this.startAt('Quoinex').trade('ETH').trade('BTC').transferTo(out).trade('AUD').build());
+      });
+      this.routes.push(this.startAt('Quoinex').trade('ETH').trade('BTC').trade('AUD').build());
+      this.routes.push(this.startAt('Quoinex').trade('BTC').trade('ETH').trade('AUD').build());
+      this.routes.push(this.startAt('Quoinex').trade('ETH').trade('AUD').build());
+      this.routes.push(this.startAt('Quoinex').trade('BTC').trade('AUD').build());
+      this.routes.push(this.startAt('Independent Reserve').trade('BTC').trade('AUD').build());
+      this.routes.push(this.startAt('Independent Reserve').trade('ETH').trade('AUD').build());
+      this.routes.push(this.startAt('BtcMarkets').trade('BTC').trade('AUD').build());
+      this.routes.push(this.startAt('BtcMarkets').trade('ETH').trade('AUD').build());
+           this.routes = this.routes.sort((a,b) => { return b.percentageGain - a.percentageGain });
     }, 1000);
+  }
+
+  private startAt(exchange: string): RouteBuilder {
+    return new RouteBuilder(this.exchanges).start(this.investmentStart, 'AUD', exchange);
   }
 
 }
@@ -113,6 +130,7 @@ class RouteBuilder {
 
   private convert(toCurrency: Currency): number {
     if (!this.currentState.exchange) {
+      console.error('unknown exchange/pair');
       debugger;
     }
     const pair: CurrencyPair = this.currentState.exchange.pairs.find(pair =>

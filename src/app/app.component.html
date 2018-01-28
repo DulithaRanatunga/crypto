@@ -1,10 +1,11 @@
 <div>
+  <button (click)="loadData()">Reload</button>
   <tabset>
-    <tab heading="Raw" id="tab1">
-      <display-raw-data [exchanges]="exchanges"></display-raw-data>
-    </tab>
     <tab heading="Routes">
       <selected-routes [exchanges]="exchanges"></selected-routes>
+    </tab>
+    <tab heading="Raw">
+      <display-raw-data [exchanges]="exchanges"></display-raw-data>
     </tab>
   </tabset>
 </div>
