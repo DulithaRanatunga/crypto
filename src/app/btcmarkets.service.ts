@@ -13,7 +13,7 @@ interface BtcApiTick {
 @Injectable()
 export class BtcmarketsService {
   private apiURL: string = 'https://api.btcmarkets.net/market/';
-  private btcMarketsFee: number = 0.85;
+  private btcMarketsFee: number = 0.75;
 
   public constructor(private httpClient: HttpClient) {
   }
