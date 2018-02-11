@@ -1,8 +1,16 @@
 <div>
   <button (click)="loadData()">Reload</button>
+
+  <div>
+    Ticker prices (BTCMarkets):  BTC: {{getBtcmExchangeRate('BTC') | currency:'AUD'}}, ETH: {{getBtcmExchangeRate('ETH') | currency:'AUD'}}, XRP: {{getBtcmExchangeRate('XRP') | currency:'AUD'}}
+  </div>
+
   <tabset>
-    <tab heading="Routes">
-      <selected-routes [exchanges]="exchanges"></selected-routes>
+    <tab heading="AusRoutes">
+      <selected-routes [exchanges]="exchanges" [routes]="ausRoutes"></selected-routes>
+    </tab>
+    <tab heading="IntlRoutes">
+      <selected-routes [exchanges]="exchanges" [routes]="intlRoutes"></selected-routes>
     </tab>
     <tab heading="Raw">
       <display-raw-data [exchanges]="exchanges"></display-raw-data>
